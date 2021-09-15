@@ -102,8 +102,8 @@ class DDPGAgent(object):
         self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=params["critic_lr"])
 
     def select_action(self, state):
-        action = self.actor(state)
-        action = torch.tensor(action.item(), device=self.device, dtype=torch.float)
+        action = self.actor(state).detach()
+        # action = torch.tensor(action.item(), device=self.device, dtype=torch.float)
         return action
 
     def optimize_model(self):

@@ -35,6 +35,7 @@ class Net(nn.Module):
 
 
 class Reinforce(object):
+
     def __init__(self, env):
         self.env = env
         self.policy = Net(2, 3)
@@ -59,7 +60,9 @@ class Reinforce(object):
                 state, reward, done, _ = self.env.step(action)
                 self.episode_rewards.append(reward)
                 if done:
-                    self.update_policy()
+                    print("done.")
+                    break        
+            self.update_policy()
 
     def update_policy(self):
         episode_G = np.zeros_like(self.episode_rewards)

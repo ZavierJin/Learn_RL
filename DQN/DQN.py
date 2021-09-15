@@ -51,7 +51,8 @@ class ReplayMemory(object):
         Transition of batch-arrays.
         """
         random_transition = random.sample(self.memory, batch_size)
-        return random_transition
+        batch = self.transition(*zip(*random_transition))
+        return batch
 
     def __len__(self):
         return len(self.memory)
@@ -112,10 +113,10 @@ class DQNAgent(object):
         if len(self.memory) < self.batch_size:
             return
 
-        Transition = namedtuple('Transition',
-                        ('state', 'action', 'next_state', 'reward'))
-        transitions = self.memory.sample(self.batch_size)
-        batch = Transition(*zip(*transitions))
+        # Transition = namedtuple('Transition',
+        #                 ('state', 'action', 'next_state', 'reward'))
+        batch = self.memory.sample(self.batch_size)
+        # batch = Transition(*zip(*transitions))
 
         # Compute a mask of non-final states and concatenate the batch elements
         # (a final state would've been the one after which simulation ended)
@@ -161,6 +162,7 @@ class DQNAgent(object):
             for t in count():
                 # Select and perform an action
                 action = self.select_action(state)
+                
                 self.env.render(mode='rgb_array')
 
                 # Observe new state
